@@ -29,23 +29,23 @@ def generate_commits(start_date, end_date):
             env['GIT_COMMITTER_DATE'] = current_date.strftime('%Y-%m-%dT%H:%M:%S')
             env['GIT_AUTHOR_DATE'] = current_date.strftime('%Y-%m-%dT%H:%M:%S')
             
-            subprocess.run(["git", "add", "dummy.txt"])
+            subprocess.run(["git", "add", "dummy.txt"], env=env)
             subprocess.run(["git", "commit", "-m", commit_message], env=env)
         
         current_date += timedelta(days=1)
 
 def push_changes():
-    """Push commits to GitHub."""
-    subprocess.run(["git", "push", "origin", "main"])
+    """Force push commits to GitHub."""
+    subprocess.run(["git", "push", "--force", "origin", "main"])
 
 def main():
     start_date = datetime(2025, 1, 1)
-    end_date = datetime(2025, 3, 31)
+    end_date = datetime.today()
     
     generate_commits(start_date, end_date)
     push_changes()
     
-    print("✅ Contributions added successfully!")
+    print("✅ Contributions added successfully! Wait a few minutes for GitHub to update.")
 
 if __name__ == "__main__":
     main()
